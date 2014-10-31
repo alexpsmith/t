@@ -155,6 +155,35 @@ drawing = {
                 down: false
             }
         }
+    },
+    FullScreenReliant: function(obj, method){
+        var pfx = ["webkit", "moz", "ms", "o", ""];
+            var p = 0, m, t;
+    while (p < pfx.length && !obj[m]) {
+        m = method;
+        if (pfx[p] == "") {
+            m = m.substr(0,1).toLowerCase() + m.substr(1);
+        }
+        m = pfx[p] + m;
+        t = typeof obj[m];
+        if (t != "undefined") {
+            pfx = [pfx[p]];
+            return (t == "function" ? obj[m]() : obj[m]);
+        }
+        p++;
+    }
+    },
+    FullScreen: function(element, expandElement){
+            if (drawing.FullScreenReliant(document, "FullScreen") || drawing.FullScreenReliant(document, "IsFullScreen")) {
+        //RunPrefixMethod(document, "CancelFullScreen");
+    }
+        else {
+            drawing.FullScreenReliant(element, "RequestFullScreen");
+            if (expandElement){
+                $(element).css('width', $("body").css("width"));
+                $(element).css('height', $("body").css("height"));
+            }
+        }
     }
 
 
